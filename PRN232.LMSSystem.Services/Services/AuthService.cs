@@ -34,53 +34,9 @@ public class AuthService : IAuthService
     {
         var user = await _userRepository.GetByUsernameAsync(request.Username);
         
-        // Defensive seeding/repairing of seeded users in case of encoding or seeding discrepancies
-        if (user == null)
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
-            if (request.Username.ToLower() == "admin" && request.Password == "123456")
-            {
-                var adminUser = new User
-                {
-                    Username = "admin",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
-                    Role = "Admin"
-                };
-                await _userRepository.AddAsync(adminUser);
-                await _userRepository.SaveAsync();
-                user = adminUser;
-            }
-            else if (request.Username.ToLower() == "student" && request.Password == "123456")
-            {
-                var studentUser = new User
-                {
-                    Username = "student",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
-                    Role = "Student"
-                };
-                await _userRepository.AddAsync(studentUser);
-                await _userRepository.SaveAsync();
-                user = studentUser;
-            }
-            else
-            {
-                throw new BadRequestException("Invalid username or password.");
-            }
-        }
-        else
-        {
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-            {
-                if (request.Password == "123456")
-                {
-                    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456");
-                    _userRepository.Update(user);
-                    await _userRepository.SaveAsync();
-                }
-                else
-                {
-                    throw new BadRequestException("Invalid username or password.");
-                }
-            }
+            throw new BadRequestException("Invalid username or password.");
         }
 
         // Generate Access Token
