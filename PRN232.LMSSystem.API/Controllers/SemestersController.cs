@@ -13,6 +13,7 @@ namespace PRN232.LMSSystem.API.Controllers;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/semesters")]
 [Authorize]
+[Produces("application/json", "application/xml")]
 public class SemestersController : ControllerBase
 {
     private readonly ISemesterService _semesterService;

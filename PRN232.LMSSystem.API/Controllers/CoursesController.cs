@@ -13,6 +13,7 @@ namespace PRN232.LMSSystem.API.Controllers;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/courses")]
 [Authorize]
+[Produces("application/json", "application/xml")]
 public class CoursesController : ControllerBase
 {
     private readonly ICourseService _courseService;

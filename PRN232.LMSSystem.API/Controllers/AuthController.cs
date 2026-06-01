@@ -9,6 +9,7 @@ namespace PRN232.LMSSystem.API.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/auth")]
+[Produces("application/json", "application/xml")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
