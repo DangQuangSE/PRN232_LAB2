@@ -89,5 +89,6 @@ ON CONFLICT DO NOTHING;
 -- Seed Users (Password is '123456' hashed with BCrypt work factor 11)
 INSERT INTO "User" ("Username", "PasswordHash", "Role")
 VALUES
-('admin', '$2a$11$j7vsQHU8AYGzv0a3I.sWz.UTyTjuf57M.YJbV5uuiOXIyqQzWFmwa', 'Admin'),
-('student', '$2a$11$j7vsQHU8AYGzv0a3I.sWz.UTyTjuf57M.YJbV5uuiOXIyqQzWFmwa', 'Student');
+('admin', '
+('admin', '$2a$12$61eNRjOYrMbOF/DZDt37NOrnJ78NrEszd91M9jJEQbC3KHb3SvuRy', 'Admin'),
+('student', '$2a$12$61eNRjOYrMbOF/DZDt37NOrnJ78NrEszd91M9jJEQbC3KHb3SvuRy', 'Student');

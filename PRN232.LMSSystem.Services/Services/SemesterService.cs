@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PRN232.LMSSystem.Repositories.Entities;
 using PRN232.LMSSystem.Repositories.Interfaces;
@@ -15,10 +16,12 @@ namespace PRN232.LMSSystem.Services.Services;
 public class SemesterService : ISemesterService
 {
     private readonly ISemesterRepository _semesterRepository;
+    private readonly IValidator<SemesterRequest> _validator;
 
-    public SemesterService(ISemesterRepository semesterRepository)
+    public SemesterService(ISemesterRepository semesterRepository, IValidator<SemesterRequest> validator)
     {
         _semesterRepository = semesterRepository;
+        _validator = validator;
     }
 
     public async Task<(IEnumerable<SemesterResponse> Data, PaginationMetadata Pagination)> GetAllAsync(QueryParameters queryParams)
@@ -60,6 +63,10 @@ public class SemesterService : ISemesterService
 
     public async Task<SemesterResponse> CreateAsync(SemesterRequest request)
     {
+        var validation = await _validator.ValidateAsync(request);
+        if (!validation.IsValid)
+            throw new BadRequestException("Validation failed.", validation.Errors.Select(e => e.ErrorMessage));
+
         var semester = new Semester
         {
             SemesterName = request.SemesterName,
@@ -75,6 +82,10 @@ public class SemesterService : ISemesterService
 
     public async Task UpdateAsync(int id, SemesterRequest request)
     {
+        var validation = await _validator.ValidateAsync(request);
+        if (!validation.IsValid)
+            throw new BadRequestException("Validation failed.", validation.Errors.Select(e => e.ErrorMessage));
+
         var semester = await _semesterRepository.GetByIdAsync(id)
             ?? throw new NotFoundException("Semester", id);
 

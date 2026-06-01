@@ -1,5 +1,14 @@
 namespace PRN232.LMSSystem.Services.Models.Response;
 
+/// <summary>Simplified student response used in API v2 — returns only core identity fields.</summary>
+public class StudentV2Response
+{
+    public int StudentId { get; set; }
+    public string StudentCode { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+}
+
 public class StudentResponse
 {
     public int StudentId { get; set; }
