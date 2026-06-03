@@ -16,6 +16,8 @@ using DotNetEnv;
 using Asp.Versioning;
 using FluentValidation;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
 
